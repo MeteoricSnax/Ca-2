@@ -18,5 +18,9 @@ public class SchemaBuilder {
         properties.put("javax.persistence.sql-load-script-source", "Scripts/PopulateCityInfo.sql");
         Persistence.generateSchema("jpapu", properties);
         
+        properties.remove("javax.persistence.sql-load-script-source");
+        properties.put("javax.persistence.sql-load-script-source", "Scripts/PopulatePerson.sql");
+        Persistence.generateSchema("jpapu", properties);
+        
     }
 }
