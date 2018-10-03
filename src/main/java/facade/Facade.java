@@ -94,16 +94,16 @@ public class Facade {
     }
     
     // Returns a list of all the cities in Denmark
-    public List<CityInfoDTO> getZipCodes(){
-        List<CityInfoDTO> cityinfo = null;
+    public List<String> getZipCodes(){
+        List<String> zipCodes = null;
         EntityManager em = getEntityManager();
         try {
-            Query dQuery = em.createQuery("SELECT NEW mappers.CityInfoDTO(ci) FROM CityInfo ci");
-            cityinfo = dQuery.getResultList();
+            Query dQuery = em.createQuery("SELECT ci.zip FROM CityInfo ci");
+            zipCodes = dQuery.getResultList();
         } finally {
             em.close();
         }
-        return cityinfo;
+        return zipCodes;
     }
     
     // Returns a list of Persons from a given hobby
