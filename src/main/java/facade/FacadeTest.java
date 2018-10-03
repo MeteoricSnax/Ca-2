@@ -39,6 +39,14 @@ public class FacadeTest {
         // Test delete person
 //        System.out.println("Test deletePerson(): ");
 //        System.out.println(f.deletePerson(1L) + "\n");
+
+        // Test get zip codes
+        System.out.println("Test getZipCodes(): ");
+        List<String> zipCodes = f.getZipCodes();
+        for(String s : zipCodes){
+            System.out.println(s);
+        }
+        System.out.println("");
         
         // Test get all Persons
         System.out.println("Test getAllPersons(): ");
