@@ -15,12 +15,11 @@ public class SchemaBuilder {
         Persistence.generateSchema("jpapu", properties);
         
         properties.remove("javax.persistence.sql-load-script-source");
-        properties.put("javax.persistence.sql-load-script-source", "Scripts/PopulateCityInfo.sql");
+        properties.put("javax.persistence.sql-load-script-source", "Scripts/PopulateSQL.sql");
         Persistence.generateSchema("jpapu", properties);
         
 //        properties.remove("javax.persistence.sql-load-script-source");
 //        properties.put("javax.persistence.sql-load-script-source", "Scripts/PopulatePerson.sql");
-//        Persistence.generateSchema("jpapu", properties);
-        
+//        Persistence.generateSchema("jpapu", properties);       
     }
 }
