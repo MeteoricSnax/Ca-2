@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(exceptions.PersonNotFoundExceptionMapper.class);
+        resources.add(exceptions.ValidationErrorExceptionMapper.class);
         resources.add(rest.CorsRequestFilter.class);
         resources.add(rest.CorsResponseFilter.class);
         resources.add(rest.PersonResource.class);

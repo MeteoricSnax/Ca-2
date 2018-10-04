@@ -13,11 +13,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 /**
  *
  * @author Mads
  */
+@Provider
 public class ValidationErrorExceptionMapper implements ExceptionMapper<ValidationErrorException>{
     
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();

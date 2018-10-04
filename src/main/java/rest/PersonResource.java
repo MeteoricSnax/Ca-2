@@ -61,8 +61,8 @@ public class PersonResource {
     @GET
     @Path("/phone/{number}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPersonByPhone(@PathParam("number") int number) throws PersonNotFoundException {
-            if(f.getPersonByPhone(number) == null){
+    public Response getPersonByPhone(@PathParam("number") int number) throws PersonNotFoundException{
+            if(f.getPersonByPhone(number).isEmpty()){
                 throw new PersonNotFoundException("Unable to find a person with the provided phone number");
             }
             return Response.ok().entity(gson.toJson(f.getPersonByPhone(number))).build();

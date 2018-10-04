@@ -65,13 +65,13 @@ public class Facade {
     }
     
     // Returns a Person from a given phone number
-    public PersonDTO getPersonByPhone(int phone){
-        PersonDTO p = null;
+    public List<PersonDTO> getPersonByPhone(int phone){
+        List<PersonDTO> p = null;
         EntityManager em = getEntityManager();
         try {
             Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(person) FROM Phone phone JOIN phone.person person WHERE phone.number = :phone");
             dQuery.setParameter("phone", phone);
-            p = (PersonDTO) dQuery.getSingleResult();
+            p = dQuery.getResultList();
         } catch(NoResultException ex){
             return null;
         } finally {
@@ -144,12 +144,12 @@ public class Facade {
             em.getTransaction().begin();
             person = em.find(Person.class, id);
             em.remove(person);
-            Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p WHERE p.id = :id");
-            dQuery.setParameter("id", id);
-            p = (PersonDTO) dQuery.getSingleResult();
+//            Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p WHERE p.id = :id");
+//            dQuery.setParameter("id", id);
+//            p = (PersonDTO) dQuery.getSingleResult();
             em.getTransaction().commit();
         } catch(NoResultException ex){
-            return null;
+//            return null;
         } finally {
             em.close();
         }
