@@ -37,12 +37,12 @@ public class FacadeTest {
         System.out.println("");
         
         // Test get person by hobby
-//        System.out.println("Test getPersonsByHobby(): ");
-//        List<PersonDTO> persons2 = f.getPersonsByHobby("running");
-//        for(PersonDTO p : persons2){
-//            System.out.println(p);
-//        }
-//        System.out.println("");
+        System.out.println("Test getPersonsByHobby(): ");
+        List<PersonDTO> persons2 = f.getPersonsByHobby("running");
+        for(PersonDTO p : persons2){
+            System.out.println(p);
+        }
+        System.out.println("");
         
         // Test get person by zipcode
         System.out.println("Test getPersonsByZipcode(): ");

@@ -87,8 +87,8 @@ public class Facade {
         try {
             Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p JOIN p.hobbies h WHERE h.name = :hobby");
             dQuery.setParameter("hobby", hobby);
+            persons = dQuery.getResultList();
         } catch(Exception ex){
-            ex.printStackTrace();
             return null;
         } finally {
             em.close();
