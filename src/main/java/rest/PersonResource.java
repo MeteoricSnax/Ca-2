@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rest;
 
 import com.google.gson.Gson;
@@ -34,106 +29,153 @@ import mappers.PersonDTO;
  */
 @Path("person")
 public class PersonResource {
+
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     Facade f = new Facade(Persistence.createEntityManagerFactory("jpapu"));
-    
+
     @Context
     private UriInfo context;
 
     public PersonResource() {
     }
 
+    /**
+     * This method returns all persons.
+     * @return all persons in a array
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonsArray() {
         return Response.ok().entity(gson.toJson(f.getAllPersons())).build();
     }
-    
+
+    /**
+     * This method returns the person with the corresponding id.
+     * @param id
+     * @return getPerson    the person with the parameter id
+     * @throws PersonNotFoundException 
+     */
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPerson(@PathParam("id") Long id) throws PersonNotFoundException {
-            if(f.getPerson(id) == null){
-                throw new PersonNotFoundException("Unable to find a person with the provided ID");
-            }
-            return Response.ok().entity(gson.toJson(f.getPerson(id))).build();
+        if (f.getPerson(id) == null) {
+            throw new PersonNotFoundException("Unable to find a person with the provided ID");
+        }
+        return Response.ok().entity(gson.toJson(f.getPerson(id))).build();
     }
-    
+
+    /**
+     * Method returns all persons with the requested hobby
+     * @param hobby
+     * @return getPetsonsByHobby all persons with parameter hobby
+     * @throws PersonNotFoundException 
+     */
     @GET
     @Path("/hobby/{hobby}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonsByHobby(@PathParam("hobby") String hobby) throws PersonNotFoundException {
-            if(f.getPersonsByHobby(hobby) == null){
-                throw new PersonNotFoundException("Unable to find any persons with the provided hobby");
-            }
-            return Response.ok().entity(gson.toJson(f.getPersonsByHobby(hobby))).build();
+        if (f.getPersonsByHobby(hobby) == null) {
+            throw new PersonNotFoundException("Unable to find any persons with the provided hobby");
+        }
+        return Response.ok().entity(gson.toJson(f.getPersonsByHobby(hobby))).build();
     }
-    
+    /**
+     * Method returns all persons with that requested zip-code.
+     * @param zipcode
+     * @return getPersonByZipcode
+     * @throws PersonNotFoundException 
+     */
     @GET
     @Path("/zipcode/{zip}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonsByZipcode(@PathParam("zip") String zipcode) throws PersonNotFoundException {
-            if(f.getPersonsByZipcode(zipcode) == null){
-                throw new PersonNotFoundException("Unable to find any persons with the provided zipcode");
-            }
-            return Response.ok().entity(gson.toJson(f.getPersonsByZipcode(zipcode))).build();
+        if (f.getPersonsByZipcode(zipcode) == null) {
+            throw new PersonNotFoundException("Unable to find any persons with the provided zipcode");
+        }
+        return Response.ok().entity(gson.toJson(f.getPersonsByZipcode(zipcode))).build();
     }
-    
+    /**
+     * Method returns all persons living in the requested city
+     * @param city
+     * @return all persons living in the same city
+     * @throws PersonNotFoundException 
+     */
     @GET
     @Path("/city/{city}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonsByCity(@PathParam("city") String city) throws PersonNotFoundException {
-            if(f.getPersonsInCity(city) == null){
-                throw new PersonNotFoundException("Unable to find any persons");
-            }
-            return Response.ok().entity(gson.toJson(f.getPersonsInCity(city))).build();
+        if (f.getPersonsInCity(city) == null) {
+            throw new PersonNotFoundException("Unable to find any persons");
+        }
+        return Response.ok().entity(gson.toJson(f.getPersonsInCity(city))).build();
     }
-    
-    
+    /**
+     * Method returns the person with the requested phone number.
+     * @param number
+     * @return the person with the phone number
+     * @throws PersonNotFoundException 
+     */
     @GET
     @Path("/phone/{number}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPersonByPhone(@PathParam("number") int number) throws PersonNotFoundException{
-            if(f.getPersonByPhone(number).isEmpty()){
-                throw new PersonNotFoundException("Unable to find a person with the provided phone number");
-            }
-            return Response.ok().entity(gson.toJson(f.getPersonByPhone(number))).build();
+    public Response getPersonByPhone(@PathParam("number") int number) throws PersonNotFoundException {
+        if (f.getPersonByPhone(number).isEmpty()) {
+            throw new PersonNotFoundException("Unable to find a person with the provided phone number");
+        }
+        return Response.ok().entity(gson.toJson(f.getPersonByPhone(number))).build();
     }
-    
+    /**
+     * Method creates a new person with the name included.
+     * @param content
+     * @return ok response.
+     * @throws ValidationErrorException 
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response postPerson(String content) throws ValidationErrorException {
-            Person person = gson.fromJson(content, Person.class);
-            if(person.getFirstName().equals("") || person.getLastName().equals("")){
-                throw new ValidationErrorException("First Name or Last Name is missing");
-            }
-            f.createPerson(person);
-            return Response.ok().entity(gson.toJson(person)).build();
+        Person person = gson.fromJson(content, Person.class);
+        if (person.getFirstName().equals("") || person.getLastName().equals("")) {
+            throw new ValidationErrorException("First Name or Last Name is missing");
+        }
+        f.createPerson(person);
+        return Response.ok().entity(gson.toJson(person)).build();
     }
-    
+    /**
+     * Method used to update person
+     * @param content
+     * @return ok response.
+     * @throws ValidationErrorException
+     * @throws PersonNotFoundException 
+     */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePerson(String content) throws ValidationErrorException, PersonNotFoundException {
-            Person person = gson.fromJson(content, Person.class);
-            if(person.getEmail().equals("") || person.getFirstName().equals("") || person.getLastName().equals("")){
-                throw new ValidationErrorException("Email, First Name or Last Name is missing");
-            }
-            if(f.getPerson(person.getId()) == null){
-                throw new PersonNotFoundException("Unable to delete. No person with the provided ID exists");
-            }
-            return Response.ok().entity(gson.toJson(f.updatePerson(person))).build();
+        Person person = gson.fromJson(content, Person.class);
+        if (person.getEmail().equals("") || person.getFirstName().equals("") || person.getLastName().equals("")) {
+            throw new ValidationErrorException("Email, First Name or Last Name is missing");
+        }
+        if (f.getPerson(person.getId()) == null) {
+            throw new PersonNotFoundException("Unable to delete. No person with the provided ID exists");
+        }
+        return Response.ok().entity(gson.toJson(f.updatePerson(person))).build();
     }
-    
+    /**
+     * Method deletes the person with that id.
+     * @param id
+     * @return ok response
+     * @throws PersonNotFoundException 
+     */
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePerson(@PathParam("id") Long id) throws PersonNotFoundException {
-            if(f.getPerson(id) == null){
-                throw new PersonNotFoundException("Could not delete. No person with provided id exists");
-            }
-            return Response.ok().entity(gson.toJson(f.deletePerson(id))).build();
+        if (f.getPerson(id) == null) {
+            throw new PersonNotFoundException("Could not delete. No person with provided id exists");
+        }
+        return Response.ok().entity(gson.toJson(f.deletePerson(id))).build();
     }
-    
+
 }
