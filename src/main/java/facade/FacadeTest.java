@@ -60,6 +60,15 @@ public class FacadeTest {
         }
         System.out.println("");
         
+         // Test get person by name
+        System.out.println("Test getPersonsByName(): ");
+        List<PersonDTO> persons5 = f.getPersonsByName("Lars", "Larsen");
+        for(PersonDTO p : persons5){
+            System.out.println(p);
+        }
+        System.out.println("");
+        
+        
         // Test update person
 //        System.out.println("Test updatePerson(): ");
 //        System.out.println(f.updatePerson(new Person (1l, "someemail", "Hans", "Hansen")));

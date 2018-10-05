@@ -75,7 +75,7 @@ public class PersonResource {
     @Path("/hobby/{hobby}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonsByHobby(@PathParam("hobby") String hobby) throws PersonNotFoundException {
-        if (f.getPersonsByHobby(hobby) == null) {
+        if (f.getPersonsByHobby(hobby).isEmpty()) {
             throw new PersonNotFoundException("Unable to find any persons with the provided hobby");
         }
         return Response.ok().entity(gson.toJson(f.getPersonsByHobby(hobby))).build();
@@ -90,11 +90,22 @@ public class PersonResource {
     @Path("/zipcode/{zip}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonsByZipcode(@PathParam("zip") String zipcode) throws PersonNotFoundException {
-        if (f.getPersonsByZipcode(zipcode) == null) {
+        if (f.getPersonsByZipcode(zipcode).isEmpty()) {
             throw new PersonNotFoundException("Unable to find any persons with the provided zipcode");
         }
         return Response.ok().entity(gson.toJson(f.getPersonsByZipcode(zipcode))).build();
     }
+    
+    @GET
+    @Path("/name")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersonsByName(@QueryParam("firstname") String fname, @QueryParam("lastname") String lname) throws PersonNotFoundException {
+        if (f.getPersonsByName(fname, lname).isEmpty()) {
+            throw new PersonNotFoundException("Unable to find any persons with the provided name");
+        }
+        return Response.ok().entity(gson.toJson(f.getPersonsByName(fname, lname))).build();
+    }
+    
     /**
      * Method returns all persons living in the requested city
      * @param city
@@ -105,7 +116,7 @@ public class PersonResource {
     @Path("/city/{city}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPersonsByCity(@PathParam("city") String city) throws PersonNotFoundException {
-        if (f.getPersonsInCity(city) == null) {
+        if (f.getPersonsInCity(city).isEmpty()) {
             throw new PersonNotFoundException("Unable to find any persons");
         }
         return Response.ok().entity(gson.toJson(f.getPersonsInCity(city))).build();

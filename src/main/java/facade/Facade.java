@@ -143,6 +143,23 @@ public class Facade {
         return persons;
     }
     
+    // Returns a list of Persons from a given name
+    public List<PersonDTO> getPersonsByName(String firstName, String lastName){
+        List<PersonDTO> persons = null;
+        EntityManager em = getEntityManager();
+        try {
+            Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p WHERE p.firstName = :fname AND p.lastName = :lname");
+            dQuery.setParameter("fname", firstName);
+            dQuery.setParameter("lname", lastName);
+            persons = dQuery.getResultList();
+        } catch(Exception ex){
+            return null;
+        } finally {
+            em.close();
+        }
+        return persons;
+    }
+    
     // Updates a Person with a given ID
     public Person updatePerson(Person person){
         Person p = null;
