@@ -40,7 +40,7 @@ public class Facade {
             Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p WHERE p.id = :id");
             dQuery.setParameter("id", person.getId());
             p = (PersonDTO) dQuery.getSingleResult();
-        } catch(NoResultException ex){
+        } catch(Exception ex){
             return null;
         } finally {
             em.close();
@@ -56,7 +56,7 @@ public class Facade {
             Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p WHERE p.id = :id");
             dQuery.setParameter("id", id);
             p = (PersonDTO) dQuery.getSingleResult();
-        } catch(NoResultException ex){
+        } catch(Exception ex){
             return null;
         } finally {
             em.close();
@@ -72,7 +72,7 @@ public class Facade {
             Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(person) FROM Phone phone JOIN phone.person person WHERE phone.number = :phone");
             dQuery.setParameter("phone", phone);
             p = dQuery.getResultList();
-        } catch(NoResultException ex){
+        } catch(Exception ex){
             return null;
         } finally {
             em.close();
@@ -85,8 +85,11 @@ public class Facade {
         List<PersonDTO> persons = null;
         EntityManager em = getEntityManager();
         try {
-            Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p JOIN p.hobbies h WHERE p.hobbies.name = :hobby");
+            Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p JOIN p.hobbies h WHERE h.name = :hobby");
             dQuery.setParameter("hobby", hobby);
+        } catch(Exception ex){
+            ex.printStackTrace();
+            return null;
         } finally {
             em.close();
         }
@@ -100,19 +103,40 @@ public class Facade {
         try {
             Query dQuery = em.createQuery("SELECT ci.zip FROM CityInfo ci");
             zipCodes = dQuery.getResultList();
+        } catch(Exception ex){
+            return null;
         } finally {
             em.close();
         }
         return zipCodes;
     }
     
-    // Returns a list of Persons from a given hobby
+    // Returns a list of Persons from a given city
     public List<PersonDTO> getPersonsInCity(String city){
         List<PersonDTO> persons = null;
         EntityManager em = getEntityManager();
         try {
             Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p JOIN p.address a JOIN a.cityInfo ci WHERE ci.city = :city");
             dQuery.setParameter("city", city);
+            persons = dQuery.getResultList();
+        } catch(Exception ex){
+            return null;
+        } finally {
+            em.close();
+        }
+        return persons;
+    }
+    
+    // Returns a list of Persons from a given city
+    public List<PersonDTO> getPersonsByZipcode(String zip){
+        List<PersonDTO> persons = null;
+        EntityManager em = getEntityManager();
+        try {
+            Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p JOIN p.address a JOIN a.cityInfo ci WHERE ci.zip = :zip");
+            dQuery.setParameter("zip", zip);
+            persons = dQuery.getResultList();
+        } catch(Exception ex){
+            return null;
         } finally {
             em.close();
         }
@@ -129,6 +153,8 @@ public class Facade {
             em.merge(person);
             em.getTransaction().commit();
             p = em.find(Person.class, person.getId());
+        } catch(Exception ex){
+            return null;
         } finally {
             em.close();
         }
@@ -148,8 +174,8 @@ public class Facade {
 //            dQuery.setParameter("id", id);
 //            p = (PersonDTO) dQuery.getSingleResult();
             em.getTransaction().commit();
-        } catch(NoResultException ex){
-//            return null;
+        } catch(Exception ex){
+            return null;
         } finally {
             em.close();
         }
@@ -163,6 +189,8 @@ public class Facade {
         try {
             Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p");
             persons = dQuery.getResultList();
+        } catch(Exception ex){
+            return null;
         } finally {
             em.close();
         }

@@ -22,6 +22,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import mappers.PersonDTO;
@@ -57,6 +58,37 @@ public class PersonResource {
             }
             return Response.ok().entity(gson.toJson(f.getPerson(id))).build();
     }
+    
+    @GET
+    @Path("/hobby/{hobby}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersonsByHobby(@PathParam("hobby") String hobby) throws PersonNotFoundException {
+            if(f.getPersonsByHobby(hobby) == null){
+                throw new PersonNotFoundException("Unable to find any persons with the provided hobby");
+            }
+            return Response.ok().entity(gson.toJson(f.getPersonsByHobby(hobby))).build();
+    }
+    
+    @GET
+    @Path("/zipcode/{zip}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersonsByZipcode(@PathParam("zip") String zipcode) throws PersonNotFoundException {
+            if(f.getPersonsByZipcode(zipcode) == null){
+                throw new PersonNotFoundException("Unable to find any persons with the provided zipcode");
+            }
+            return Response.ok().entity(gson.toJson(f.getPersonsByZipcode(zipcode))).build();
+    }
+    
+    @GET
+    @Path("/city/{city}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersonsByCity(@PathParam("city") String city) throws PersonNotFoundException {
+            if(f.getPersonsInCity(city) == null){
+                throw new PersonNotFoundException("Unable to find any persons");
+            }
+            return Response.ok().entity(gson.toJson(f.getPersonsInCity(city))).build();
+    }
+    
     
     @GET
     @Path("/phone/{number}")
