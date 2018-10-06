@@ -164,7 +164,7 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePerson(String content) throws ValidationErrorException, PersonNotFoundException {
-        Person person = gson.fromJson(content, Person.class);
+        PersonDTO person = gson.fromJson(content, PersonDTO.class);
         if (person.getEmail().equals("") || person.getFirstName().equals("") || person.getLastName().equals("")) {
             throw new ValidationErrorException("Email, First Name or Last Name is missing");
         }

@@ -161,13 +161,16 @@ public class Facade {
     }
     
     // Updates a Person with a given ID
-    public Person updatePerson(Person person){
+    public PersonDTO updatePerson(PersonDTO person){
         Person p = null;
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            em.find(Person.class, person.getId());
-            em.merge(person);
+            Person dbPerson=em.find(Person.class, person.getId());
+            dbPerson.setEmail(person.getEmail());
+            dbPerson.setFirstName(person.getFirstName());
+            dbPerson.setLastName(person.getLastName());
+            em.merge(dbPerson);
             em.getTransaction().commit();
             p = em.find(Person.class, person.getId());
         } catch(Exception ex){
@@ -175,7 +178,7 @@ public class Facade {
         } finally {
             em.close();
         }
-        return p;
+        return new PersonDTO(p);
     }
     
     // Deletes a Person with a given ID

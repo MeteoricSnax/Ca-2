@@ -13,6 +13,16 @@ import java.util.Objects;
  * @author Mads
  */
 public class PersonDTO {
+
+    public PersonDTO() {
+    }
+
+    public PersonDTO(Long id, String email, String firstName, String lastName) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
     
     private Long id;
     private String email;

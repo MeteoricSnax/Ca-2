@@ -56,12 +56,9 @@ public class FacadeIT {
     @Test
     public void testGetEntityManager() {
         System.out.println("getEntityManager");
-        Facade instance = null;
-        EntityManager expResult = null;
+        Facade instance = f;
         EntityManager result = instance.getEntityManager();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result instanceof EntityManager);
     }
 
     /**
@@ -79,7 +76,6 @@ public class FacadeIT {
         PersonDTO expResult = p;
         PersonDTO result = instance.getPerson(id);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
     }
 
     /**
@@ -94,8 +90,6 @@ public class FacadeIT {
         PersonDTO result = instance.getPerson(id);
         // expresult and result are differnt objects although content is the same.
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
     /**
@@ -110,7 +104,6 @@ public class FacadeIT {
         Long expResult = new Long(4);
         List<PersonDTO> result = (List<PersonDTO>) instance.getPersonByPhone(phone);
         assertEquals(expResult, result.get(0).getId());
-        // TODO review the generated test code and remove the default call to fail.
     }
 
     /**
@@ -120,13 +113,21 @@ public class FacadeIT {
     @Test
     public void testGetPersonsByHobby() {
         System.out.println("getPersonsByHobby");
-        String hobby = "";
-        Facade instance = null;
-        List<PersonDTO> expResult = null;
+        String hobby = "Yoga";
+        Facade instance = f;
         List<PersonDTO> result = instance.getPersonsByHobby(hobby);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(2, result.size());
+        boolean found2=false;
+        boolean found8=false;
+        for(PersonDTO person : result){
+            if(person.getId()==2) {
+                found2=true;
+            }
+            if(person.getId()==8) {
+                found8=true;
+            }
+        }
+        assertTrue(found2 && found8);
     }
 
     /**
@@ -135,12 +136,17 @@ public class FacadeIT {
     @Test
     public void testGetZipCodes() {
         System.out.println("getZipCodes");
-        Facade instance = null;
-        List<String> expResult = null;
+        Facade instance = f;
+        int count = 1352;
         List<String> result = instance.getZipCodes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(count, result.size());
+        boolean found=false;
+        for(String s : result){
+            if(s.equals("4500")) {
+                found=true;
+            }
+        }
+        assertTrue(found);        
     }
 
     /**
@@ -150,13 +156,25 @@ public class FacadeIT {
     @Test
     public void testGetPersonsInCity() {
         System.out.println("getPersonsInCity");
-        String city = "";
-        Facade instance = null;
-        List<PersonDTO> expResult = null;
+        String city = "Frederiksberg C";
+        Facade instance = f;
         List<PersonDTO> result = instance.getPersonsInCity(city);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(3, result.size());
+        boolean found3=false;
+        boolean found4=false;
+        boolean found6=false;        
+        for(PersonDTO person : result){
+            if(person.getId()==3) {
+                found3=true;
+            }
+            if(person.getId()==4) {
+                found4=true;
+            }
+            if(person.getId()==6){
+                found6=true;
+            }
+        }
+        assertTrue(found3 && found4 && found6);
     }
 
     /**
@@ -165,13 +183,13 @@ public class FacadeIT {
     @Test
     public void testUpdatePerson() {
         System.out.println("updatePerson");
-        Person person = null;
-        Facade instance = null;
-        Person expResult = null;
-        Person result = instance.updatePerson(person);
+        PersonDTO person = new PersonDTO(new Long(4),"ulrik@ulrik.com","Ulrik","Ulriksen");
+        Facade instance = f;
+        PersonDTO expResult = person;
+        PersonDTO result = instance.updatePerson(person);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        PersonDTO resultDTO = instance.getPerson(new Long(4));
+        assertEquals(person,resultDTO);
     }
 
     /**
