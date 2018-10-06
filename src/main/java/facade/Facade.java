@@ -189,10 +189,8 @@ public class Facade {
         try {
             em.getTransaction().begin();
             person = em.find(Person.class, id);
+            p = new PersonDTO(person);
             em.remove(person);
-//            Query dQuery = em.createQuery("SELECT NEW mappers.PersonDTO(p) FROM Person p WHERE p.id = :id");
-//            dQuery.setParameter("id", id);
-//            p = (PersonDTO) dQuery.getSingleResult();
             em.getTransaction().commit();
         } catch(Exception ex){
             return null;

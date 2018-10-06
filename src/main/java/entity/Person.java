@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +38,9 @@ public class Person implements Serializable {
     
     @ManyToMany
     private List<Hobby> hobbies;
+    
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "person")
+    private List<Phone> phone;
 
     public Person() {
     }

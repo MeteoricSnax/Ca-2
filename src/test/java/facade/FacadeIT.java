@@ -3,6 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+// BEWARE!
+// testpu must be initialized with testDB.sql in persistence.xml
+// <property name="javax.persistence.sql-load-script-source" value="Scripts/TestDB.sql"/>
+
 package facade;
 
 import entity.Person;
@@ -198,14 +203,14 @@ public class FacadeIT {
     @Test
     public void testDeletePerson() {
         System.out.println("deletePerson");
-        Long id = null;
-        Facade instance = null;
-        PersonDTO expResult = null;
+        Long id = new Long(13);
+        Facade instance = f;
+        // Test that the deleted person is returned
         PersonDTO result = instance.deletePerson(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        // Check if person has actually disappeared from database.
-        fail("The test case is a prototype.");
+        assertEquals(id, result.getId());
+        // Test that the deleted person has disappeared
+        result = instance.getPerson(id);
+        assertEquals(null,result);
     }
 
     /**
@@ -214,12 +219,10 @@ public class FacadeIT {
     @Test
     public void testGetAllPersons() {
         System.out.println("getAllPersons");
-        Facade instance = null;
-        List<PersonDTO> expResult = null;
+        Facade instance = f;
         List<PersonDTO> result = instance.getAllPersons();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result.size() > 12);
+        assertTrue(result.get(0).getId() != result.get(1).getId());
     }
 
     /**
@@ -228,13 +231,22 @@ public class FacadeIT {
     @Test
     public void testGetPersonsByZipcode() {
         System.out.println("getPersonsByZipcode");
-        String zip = "";
-        Facade instance = null;
+        String zip = "1971";
+        Facade instance = f;
         List<PersonDTO> expResult = null;
         List<PersonDTO> result = instance.getPersonsByZipcode(zip);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result.size() == 2);
+        boolean found4=false;
+        boolean found6=false;        
+        for(PersonDTO person : result){
+            if(person.getId()==4) {
+                found4=true;
+            }
+            if(person.getId()==6){
+                found6=true;
+            }
+        }
+        assertTrue(found4 && found6);
     }
 
     /**
@@ -243,14 +255,23 @@ public class FacadeIT {
     @Test
     public void testGetPersonsByName() {
         System.out.println("getPersonsByName");
-        String firstName = "";
-        String lastName = "";
-        Facade instance = null;
+        String firstName = "Niels";
+        String lastName = "Frederiksen";
+        Facade instance = f;
         List<PersonDTO> expResult = null;
         List<PersonDTO> result = instance.getPersonsByName(firstName, lastName);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result.size() == 2);
+        boolean found2=false;
+        boolean found3=false;        
+        for(PersonDTO person : result){
+            if(person.getId()==2) {
+                found2=true;
+            }
+            if(person.getId()==3){
+                found3=true;
+            }
+        }
+        assertTrue(found2 && found3);
     }
     
 }
