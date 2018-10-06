@@ -105,13 +105,12 @@ public class FacadeIT {
     @Test
     public void testGetPersonByPhone() {
         System.out.println("getPersonByPhone");
-        int phone = 999999999;
+        int phone = 56565363;
         Facade instance = f;
-        List<PersonDTO> expResult = null;
-        List<PersonDTO> result = instance.getPersonByPhone(phone);
-        assertEquals(expResult, result);
+        Long expResult = new Long(4);
+        List<PersonDTO> result = (List<PersonDTO>) instance.getPersonByPhone(phone);
+        assertEquals(expResult, result.get(0).getId());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
